@@ -3,8 +3,8 @@ const Animal = require('../models/animal');
 const { response } = require('express');
 
 const animalPost = async (req, res ) => {
-    const  {nombre, tipo, raza, estadoDelAnimal, role} = req.body;
-    const animal = new Animal({ nombre, tipo, raza, estadoDelAnimal, role });
+    const  {nombre, tipo, raza, caracterizticas, estadoDelAnimal, role} = req.body;
+    const animal = new Animal({ nombre, tipo, raza, caracterizticas, estadoDelAnimal, role });
 
     await animal.save();
     res.status(202).json({
@@ -26,10 +26,44 @@ const animalesGet = async (req, res = response) => {
     res.status(200).json({
         total,
         animales
-    })
+    });
 }
 
+const getAnimalById = async (req, res) => {
+    const { id } = req.params;
+    const animal = await Animal.findOne({_id: id});
+
+    res.status(200).json({
+        animal
+    });
+}
+
+const putAnimales = async (req, res = response) => {
+    const { id } = req.params;
+    const { _id, ...resto} = req.body;
+    
+    const animal = await Animal.findByIdAndUpdate(id, resto);
+
+    res.status(200).json({
+        msg: "Animal actualizado",
+        animal
+    });
+}
+
+const animalDelete = async (req, res) => {
+    const { id } = req.params;
+    const animal = await Animal.findByIdAndUpdate(id, {estado: false});
+
+    res.status(200).json({
+        msg: 'Animal eliminado exitosamente',
+        animal
+    });
+}
 module.exports = {
     animalPost,
-    animalesGet
+    animalesGet,
+    getAnimalById,
+    putAnimales,
+    animalDelete
+
 }

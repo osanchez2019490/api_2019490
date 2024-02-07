@@ -16,6 +16,11 @@ const AnimalSchema = Schema({
         required: [true, 'La raza de animal es obligatoria']
     },
 
+    caracterizticas: {
+        type: String, 
+        required: [true, 'Caracterizticas visibles del animal']
+    },
+    
     estadoDelAnimal: {
         type: String,
         required: [true, 'Requerimos saber que estado se encuentra el animal']
